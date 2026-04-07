@@ -249,6 +249,11 @@ function nextScreen() {
   if (idx < SCREENS.length - 1) setState({ screen: SCREENS[idx + 1], slideIdx: 0 });
 }
 
+function prevScreen() {
+  const idx = SCREENS.indexOf(state.screen);
+  if (idx > 0) setState({ screen: SCREENS[idx - 1], slideIdx: 0 });
+}
+
 // ============ RENDER ============
 function render() {
   const app = document.getElementById("app");
@@ -362,7 +367,10 @@ function renderInfo() {
         </div>
       `).join("")}
     </div>
-    <button class="btn btn-primary" id="nextBtn" ${!state.firstName?"disabled":""} onclick="nextScreen()">Continue</button>
+    <div style="display:flex;gap:12px;align-items:center">
+      <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
+      <button class="btn btn-primary" id="nextBtn" ${!state.firstName?"disabled":""} onclick="nextScreen()">Continue</button>
+    </div>
   `;
 }
 
@@ -386,7 +394,10 @@ function renderParq() {
         <input placeholder="Notes..." value="${state.parqNotes}" data-field="parqNotes" style="width:180px;padding:6px 12px;font-size:14px">
       </div>
     </div>
-    <div style="margin-top:24px"><button class="btn btn-primary" onclick="nextScreen()">Continue</button></div>
+    <div style="margin-top:24px;display:flex;gap:12px;align-items:center">
+      <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
+      <button class="btn btn-primary" onclick="nextScreen()">Continue</button>
+    </div>
   `;
 }
 
@@ -425,7 +436,10 @@ function renderQualify() {
         </div>
       </div>
     </div>
-    <button class="btn btn-primary" onclick="nextScreen()">Continue to Movement Screen →</button>
+    <div style="display:flex;gap:12px;align-items:center">
+      <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
+      <button class="btn btn-primary" onclick="nextScreen()">Continue to Movement Screen →</button>
+    </div>
   `;
 }
 
@@ -446,7 +460,10 @@ function renderFindings() {
       <label>Additional notes</label>
       <textarea rows="2" data-field="findingNotes">${state.findingNotes}</textarea>
     </div>
-    <button class="btn btn-primary" onclick="nextScreen()">Continue to Presentation →</button>
+    <div style="display:flex;gap:12px;align-items:center">
+      <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
+      <button class="btn btn-primary" onclick="nextScreen()">Continue to Presentation →</button>
+    </div>
   `;
 }
 
@@ -590,7 +607,7 @@ function renderPresentation() {
     </div>
     <div style="max-width:640px;min-height:300px">${content}</div>
     <div class="slide-nav">
-      ${si > 0 ? `<button class="btn btn-secondary" id="prevSlide">← Back</button>` : ''}
+      ${si > 0 ? `<button class="btn btn-secondary" id="prevSlide">← Back</button>` : `<button class="btn btn-secondary" onclick="prevScreen()">← Back</button>`}
       ${si < totalSlides - 1 ? `<button class="btn btn-primary" id="nextSlide">Next Slide →</button>` : `<button class="btn btn-accent" onclick="nextScreen()">Continue to Packages →</button>`}
     </div>
   `;
@@ -635,7 +652,8 @@ function renderPackages() {
         </div>
       </div>
     ` : ''}
-    <div style="margin-top:32px">
+    <div style="margin-top:32px;display:flex;gap:12px;align-items:center">
+      <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
       <button class="btn btn-primary" ${state.selectedPkg<0?'disabled':''} onclick="nextScreen()">${state.selectedPkg>=0?'Continue →':'Select a Package'}</button>
     </div>
   `;
@@ -679,6 +697,7 @@ function renderSummary() {
       </div>
     </div>
     <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn btn-secondary" onclick="prevScreen()">← Back</button>
       <button class="btn btn-primary" id="copySummary">Copy Summary to Clipboard</button>
       <button class="btn btn-secondary" onclick="setState({screen:'pin',pinEntry:'',firstName:'',lastName:'',age:'',email:'',phone:'',parq:{},parqNotes:'',reason:'',confidence:0,target:0,daysPerWeek:0,obstacles:[],findings:[],findingNotes:'',slideIdx:0,duration:60,selectedPkg:-1})">New Consultation</button>
     </div>
