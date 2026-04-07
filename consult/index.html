@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>LGF Consultation</title>
+<style>
+:root {
+  --dark: #0B1D2C;
+  --card: #122A3A;
+  --teal: #0F766E;
+  --mint: #2DD4BF;
+  --lmint: #CCFBF1;
+  --white: #F8FAFC;
+  --dim: #94A3B8;
+  --warm: #F59E0B;
+  --coral: #F87171;
+  --med: #0E3A4F;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--dark); color: var(--white);
+}
+#app { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.progress { display: flex; gap: 4px; padding: 14px 24px; background: var(--dark); border-bottom: 1px solid var(--card); flex-shrink: 0; }
+.progress-dot { flex: 1; height: 3px; border-radius: 2px; background: var(--card); transition: background 0.3s; }
+.progress-dot.active { background: var(--mint); }
+.screen { flex: 1; overflow-y: auto; padding: 32px; animation: fadeIn 0.35s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.label { color: var(--mint); font-size: 13px; font-weight: 600; letter-spacing: 2px; margin-bottom: 8px; }
+h2 { font-size: 28px; font-weight: 700; margin-bottom: 24px; }
+h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+p.sub { color: var(--dim); font-size: 14px; margin-bottom: 24px; }
+.card {
+  background: var(--card); border-radius: 12px; padding: 20px;
+  border: 1px solid transparent; transition: all 0.2s;
+}
+.card.hl { border-color: var(--mint); }
+.btn {
+  padding: 12px 28px; border-radius: 8px; border: none; cursor: pointer;
+  font-family: inherit; font-size: 15px; font-weight: 600; transition: all 0.2s;
+  display: inline-block;
+}
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn-primary { background: var(--teal); color: var(--white); }
+.btn-secondary { background: var(--card); color: var(--dim); border: 1px solid var(--med); }
+.btn-accent { background: var(--warm); color: var(--dark); }
+.btn-ghost { background: transparent; color: var(--mint); padding: 12px 16px; }
+input, textarea {
+  width: 100%; padding: 12px 16px; background: var(--card); border: 1px solid var(--med);
+  border-radius: 8px; color: var(--white); font-size: 16px; outline: none;
+  font-family: inherit;
+}
+input::placeholder, textarea::placeholder { color: var(--dim); opacity: 0.5; }
+textarea { resize: vertical; }
+.field { margin-bottom: 18px; }
+.field label { display: block; font-size: 13px; color: var(--dim); margin-bottom: 6px; font-weight: 500; }
+.num-row { display: flex; gap: 8px; }
+.num-btn {
+  width: 52px; height: 52px; border-radius: 10px; border: none; cursor: pointer;
+  background: var(--card); color: var(--dim); font-size: 20px; font-weight: 700;
+  transition: all 0.15s;
+}
+.num-btn.sel { background: var(--teal); color: var(--white); }
+.num-btn.sel-mint { background: var(--mint); color: var(--dark); }
+.num-btn.sel-warm { background: var(--warm); color: var(--dark); }
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag {
+  padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer;
+  background: var(--card); color: var(--dim); font-size: 14px; font-weight: 500;
+  transition: all 0.15s;
+}
+.tag.sel { background: var(--coral); color: var(--white); }
+.parq-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; margin-bottom: 10px;
+}
+.parq-row span { flex: 1; margin-right: 16px; font-size: 15px; }
+.yn-group { display: flex; gap: 6px; }
+.yn-btn {
+  padding: 6px 16px; border-radius: 6px; border: none; cursor: pointer;
+  font-weight: 600; font-size: 13px; transition: all 0.15s;
+  background: var(--med); color: var(--dim);
+}
+.yn-btn.yes { background: var(--warm); color: var(--dark); }
+.yn-btn.no { background: var(--teal); color: var(--white); }
+.findings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.finding-btn {
+  padding: 14px 16px; border-radius: 10px; border: none; cursor: pointer;
+  text-align: left; background: var(--card); transition: all 0.15s;
+}
+.finding-btn.sel { background: var(--teal); }
+.finding-btn .zone { font-size: 10px; font-weight: 600; letter-spacing: 1px; color: var(--dim); }
+.finding-btn.sel .zone { color: var(--lmint); }
+.finding-btn .name { font-size: 14px; font-weight: 500; color: var(--dim); margin-top: 4px; }
+.finding-btn.sel .name { color: var(--white); }
+.slide-nav { display: flex; gap: 12px; margin-top: 32px; }
+.pkg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 640px; }
+.pkg-btn {
+  border-radius: 14px; border: 1px solid var(--med); background: var(--card);
+  cursor: pointer; text-align: center; overflow: hidden; transition: all 0.2s; padding: 0;
+}
+.pkg-btn.sel { border: 2px solid var(--mint); background: var(--teal); }
+.pkg-top { padding: 20px 12px 16px; }
+.pkg-freq { font-size: 15px; font-weight: 700; color: var(--dim); margin-bottom: 4px; }
+.pkg-btn.sel .pkg-freq { color: var(--white); }
+.pkg-sess { font-size: 12px; color: var(--dim); }
+.pkg-btn.sel .pkg-sess { color: var(--lmint); }
+.pkg-bottom { padding: 16px 12px; background: var(--med); transition: all 0.2s; }
+.pkg-btn.sel .pkg-bottom { background: rgba(0,0,0,0.2); }
+.pkg-price { font-size: 28px; font-weight: 800; color: var(--white); }
+.pkg-btn.sel .pkg-price { color: var(--mint); }
+.pkg-mo { font-size: 12px; color: var(--dim); margin-top: 4px; }
+.pkg-btn.sel .pkg-mo { color: var(--lmint); }
+.dur-toggle { display: flex; gap: 8px; margin-bottom: 24px; }
+.dur-btn {
+  padding: 8px 24px; border-radius: 8px; border: none; cursor: pointer;
+  font-size: 14px; font-weight: 600; transition: all 0.15s;
+  background: var(--card); color: var(--dim);
+}
+.dur-btn.sel { background: var(--teal); color: var(--white); }
+.summary-card { margin-bottom: 16px; }
+.summary-label { font-size: 12px; color: var(--dim); font-weight: 600; letter-spacing: 1px; margin-bottom: 8px; }
+.badge {
+  display: inline-block; background: var(--warm); color: var(--dark); padding: 4px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 700; margin-left: auto;
+}
+.stat-big { font-size: 40px; font-weight: 800; color: var(--warm); }
+.stat-label { font-size: 14px; color: var(--dim); margin-left: 12px; }
+.gap-flow { display: flex; gap: 8px; margin-bottom: 20px; }
+.gap-card { flex: 1; text-align: center; padding: 16px 8px; }
+.gap-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.gap-desc { font-size: 11px; color: var(--dim); line-height: 1.4; }
+.cost-grid { margin-bottom: 20px; }
+.cost-header { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.cost-header > div { padding: 8px 12px; background: var(--teal); font-size: 12px; font-weight: 700; }
+.cost-row { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.cost-row > div { padding: 10px 12px; font-size: 13px; color: var(--dim); }
+.cost-row:nth-child(odd) > div { background: var(--card); }
+.cost-row:nth-child(even) > div { background: var(--dark); }
+.pin-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+.pin-dots { display: flex; gap: 12px; margin: 24px 0; }
+.pin-dot { width: 16px; height: 16px; border-radius: 8px; background: var(--med); transition: all 0.15s; }
+.pin-dot.filled { background: var(--mint); }
+.pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 240px; }
+.pin-key {
+  width: 72px; height: 56px; border-radius: 10px; border: none; cursor: pointer;
+  background: var(--card); color: var(--white); font-size: 22px; font-weight: 600;
+  transition: all 0.1s;
+}
+.pin-key:active { background: var(--teal); }
+.pin-error { color: var(--coral); font-size: 14px; margin-top: 12px; min-height: 20px; }
+.next-step { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.step-num {
+  width: 24px; height: 24px; border-radius: 12px; background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.copied-toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--teal); color: var(--white); padding: 12px 24px; border-radius: 8px;
+  font-weight: 600; font-size: 14px; animation: fadeIn 0.3s; z-index: 100;
+}
+@media (max-width: 600px) {
+  .screen { padding: 20px; }
+  h2 { font-size: 24px; }
+  .findings-grid { grid-template-columns: 1fr; }
+  .pkg-grid { grid-template-columns: repeat(2, 1fr); }
+  .gap-flow { flex-wrap: wrap; }
+  .gap-card { min-width: 45%; }
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ============ DATA ============
+const PIN = "1234"; // Change this to your PIN
+
+const PARQ = [
+  "Heart condition, chest pain, or blood pressure issues?",
+  "Dizziness or loss of consciousness?",
+  "Bone or joint problems worsened by exercise?",
+  "Currently taking any medications?",
+  "Any surgeries in the last 12 months?",
+];
+
+const OBSTACLES = ["Time","Cost","No gym access","Bad trainer experience","Injury"];
+
+const FINDINGS_LIST = [
+  {id:"kneeValgus",label:"Knee valgus (knees caving in)",zone:"Knee"},
+  {id:"ankleDF",label:"Limited ankle dorsiflexion",zone:"Ankle"},
+  {id:"hipShift",label:"Hip shift or asymmetry",zone:"Hip"},
+  {id:"scapWing",label:"Scapular winging / shoulder comp.",zone:"Shoulder"},
+  {id:"coreLack",label:"Core instability / trunk sway",zone:"Spine"},
+  {id:"gluteInhib",label:"Glute inhibition",zone:"Knee"},
+  {id:"hipFlexTight",label:"Hip flexor restriction",zone:"Hip"},
+  {id:"thoracicKyph",label:"Excessive thoracic kyphosis",zone:"Shoulder"},
+  {id:"pronation",label:"Foot pronation / collapse",zone:"Ankle"},
+  {id:"lumbarExt",label:"Excessive lumbar extension",zone:"Spine"},
+];
+
+const ISSUES = [
+  {num:"01",title:"KNEE",subtitle:"Trauma & Osteoarthritis",stat:"17%",statLabel:"of athletes return to pre-injury performance after ACL surgery",stat2:"50%+",stat2Label:"stop rehab before the 9-month mark",body:"The biggest barrier isn't the surgery — it's the fear and weakness that linger after formal rehab ends. Extended strength and stability training bridges that gap.",matchZone:"Knee"},
+  {num:"02",title:"SPINE",subtitle:"Chronic Low Back Pain",stat:"$635B",statLabel:"annual cost of pain in the U.S.",body:"In advanced degeneration, pain-sensing nerves grow into damaged tissue. Targeted core stabilization, load management, and neuromuscular control build long-term spinal resilience.",matchZone:"Spine"},
+  {num:"03",title:"SHOULDER",subtitle:"Instability & STAM",stat:"Golf ball",statLabel:"on a tee — that's your shoulder joint",body:"Your muscles do all the stabilizing work. When they're not firing correctly, the joint compensates and pain follows. The fix: Release overactive muscles → Activate dormant stabilizers → Integrate functional strength.",matchZone:"Shoulder"},
+  {num:"04",title:"ANKLE",subtitle:"Tendinopathy & Instability",stat:"$80B",statLabel:"annual cost of fall injuries (65+)",body:"Limited ankle mobility forces compensations up the entire chain — knee, hip, back. Proprioceptive training and progressive calf loading restore the ankle as your body's foundation.",matchZone:"Ankle"},
+  {num:"05",title:"HIP",subtitle:"Impingement (FAI)",stat:"Not tight",statLabel:"— it's guarding",body:"Most hip restriction isn't from tight muscles. It's your nervous system protecting the joint. Aggressive stretching makes it worse. Smart loading with split-pelvis exercises restores confident movement.",matchZone:"Hip"},
+];
+
+const PACKAGES = [
+  {freq:"1x/week",sessions:4,price30:150,price60:300},
+  {freq:"2x/week",sessions:8,price30:280,price60:560},
+  {freq:"3x/week",sessions:12,price30:400,price60:780},
+  {freq:"4x/week",sessions:16,price30:520,price60:1000},
+];
+
+const COST_DATA = [
+  {proc:"ACL Surgery + Rehab",cost:"$20K–$60K",oop:"$2.5K–$6K"},
+  {proc:"Knee Replacement",cost:"$30K–$50K",oop:"$2.5K–$7.2K"},
+  {proc:"Spinal Fusion",cost:"$50K–$150K",oop:"$5K–$10K+"},
+  {proc:"Fall Hospitalization (65+)",cost:"$18,658 avg",oop:"Varies"},
+];
+
+// ============ STATE ============
+let state = {
+  screen: "pin", step: 0, pinEntry: "", pinError: false,
+  firstName: "", lastName: "", age: "", email: "", phone: "",
+  parq: {}, parqNotes: "",
+  reason: "", confidence: 0, target: 0, daysPerWeek: 0, obstacles: [],
+  findings: [], findingNotes: "",
+  slideIdx: 0,
+  duration: 60, selectedPkg: -1,
+  showToast: false,
+};
+
+const SCREENS = ["pin","welcome","info","parq","qualify","findings","presentation","packages","summary"];
+const TOTAL_STEPS = 7; // info through summary
+
+function setState(patch) {
+  Object.assign(state, patch);
+  render();
+}
+
+function nextScreen() {
+  const idx = SCREENS.indexOf(state.screen);
+  if (idx < SCREENS.length - 1) setState({ screen: SCREENS[idx + 1], slideIdx: 0 });
+}
+
+// ============ RENDER ============
+function render() {
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+
+  if (state.screen !== "pin" && state.screen !== "welcome" && state.screen !== "summary") {
+    const stepIdx = SCREENS.indexOf(state.screen) - 2;
+    app.appendChild(renderProgress(stepIdx, TOTAL_STEPS - 1));
+  }
+
+  const s = document.createElement("div");
+  s.className = "screen";
+  s.style.animation = "fadeIn 0.35s ease-out";
+
+  switch(state.screen) {
+    case "pin": app.innerHTML = ""; app.appendChild(renderPin()); return;
+    case "welcome": s.innerHTML = renderWelcome(); break;
+    case "info": s.innerHTML = renderInfo(); break;
+    case "parq": s.innerHTML = renderParq(); break;
+    case "qualify": s.innerHTML = renderQualify(); break;
+    case "findings": s.innerHTML = renderFindings(); break;
+    case "presentation": s.innerHTML = renderPresentation(); break;
+    case "packages": s.innerHTML = renderPackages(); break;
+    case "summary": s.innerHTML = renderSummary(); break;
+  }
+  app.appendChild(s);
+  attachEvents();
+}
+
+function renderProgress(current, total) {
+  const d = document.createElement("div");
+  d.className = "progress";
+  for (let i = 0; i <= total; i++) {
+    const dot = document.createElement("div");
+    dot.className = "progress-dot" + (i <= current ? " active" : "");
+    d.appendChild(dot);
+  }
+  return d;
+}
+
+// ============ PIN SCREEN ============
+function renderPin() {
+  const d = document.createElement("div");
+  d.className = "pin-screen";
+  d.innerHTML = `
+    <div style="width:48px;height:3px;background:var(--mint);border-radius:2px;margin-bottom:24px"></div>
+    <div style="font-size:14px;color:var(--dim);letter-spacing:2px;font-weight:600;margin-bottom:4px">LEE GRAYSON FITNESS</div>
+    <div style="font-size:20px;font-weight:700;margin-bottom:8px">Enter PIN</div>
+    <div class="pin-dots">
+      ${[0,1,2,3].map(i => `<div class="pin-dot${state.pinEntry.length > i ? ' filled' : ''}"></div>`).join("")}
+    </div>
+    <div class="pin-error">${state.pinError ? "Incorrect PIN" : ""}</div>
+    <div class="pin-pad">
+      ${[1,2,3,4,5,6,7,8,9,"",0,"⌫"].map(k =>
+        k === "" ? `<div></div>` : `<button class="pin-key" data-key="${k}">${k}</button>`
+      ).join("")}
+    </div>
+  `;
+  setTimeout(() => {
+    d.querySelectorAll(".pin-key").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const k = btn.dataset.key;
+        if (k === "⌫") {
+          setState({ pinEntry: state.pinEntry.slice(0, -1), pinError: false });
+        } else if (state.pinEntry.length < 4) {
+          const next = state.pinEntry + k;
+          if (next.length === 4) {
+            if (next === PIN) {
+              setState({ screen: "welcome", pinEntry: "" });
+            } else {
+              setState({ pinEntry: "", pinError: true });
+            }
+          } else {
+            setState({ pinEntry: next, pinError: false });
+          }
+        }
+      });
+    });
+  }, 10);
+  return d;
+}
+
+// ============ SCREENS ============
+function renderWelcome() {
+  return `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;text-align:center">
+      <div style="width:64px;height:4px;background:var(--mint);border-radius:2px;margin-bottom:32px"></div>
+      <h1 style="font-size:42px;font-weight:800;margin:0;letter-spacing:-1px">LEE GRAYSON</h1>
+      <h1 style="font-size:42px;font-weight:800;color:var(--mint);margin:4px 0 24px;letter-spacing:-1px">FITNESS</h1>
+      <p style="font-size:17px;color:var(--dim);max-width:400px;line-height:1.6;margin-bottom:48px">Complimentary Movement Consultation</p>
+      <button class="btn btn-primary" style="padding:16px 48px;font-size:17px" onclick="nextScreen()">Begin Consultation</button>
+    </div>
+  `;
+}
+
+function renderInfo() {
+  return `
+    <div class="label">CLIENT INFORMATION</div>
+    <h2>Let's get to know you</h2>
+    <div style="max-width:480px">
+      ${[
+        {l:"First Name",k:"firstName",t:"text"},
+        {l:"Last Name",k:"lastName",t:"text"},
+        {l:"Age",k:"age",t:"number"},
+        {l:"Email",k:"email",t:"email"},
+        {l:"Phone",k:"phone",t:"tel"},
+      ].map(f => `
+        <div class="field">
+          <label>${f.l}</label>
+          <input type="${f.t}" value="${state[f.k]}" data-field="${f.k}">
+        </div>
+      `).join("")}
+    </div>
+    <button class="btn btn-primary" id="nextBtn" ${!state.firstName?"disabled":""} onclick="nextScreen()">Continue</button>
+  `;
+}
+
+function renderParq() {
+  return `
+    <div class="label">HEALTH & SAFETY</div>
+    <h2>PAR-Q Screening</h2>
+    <p class="sub">Has your doctor ever said you have any of the following?</p>
+    <div style="max-width:560px">
+      ${PARQ.map((q, i) => `
+        <div class="card ${state.parq[i]===true?'hl':''} parq-row">
+          <span>${q}</span>
+          <div class="yn-group">
+            <button class="yn-btn ${state.parq[i]===true?'yes':''}" data-parq="${i}" data-val="true">Yes</button>
+            <button class="yn-btn ${state.parq[i]===false?'no':''}" data-parq="${i}" data-val="false">No</button>
+          </div>
+        </div>
+      `).join("")}
+      <div class="card parq-row" style="margin-top:4px">
+        <span>Anything else I should know?</span>
+        <input placeholder="Notes..." value="${state.parqNotes}" data-field="parqNotes" style="width:180px;padding:6px 12px;font-size:14px">
+      </div>
+    </div>
+    <div style="margin-top:24px"><button class="btn btn-primary" onclick="nextScreen()">Continue</button></div>
+  `;
+}
+
+function renderQualify() {
+  return `
+    <div class="label">QUALIFYING</div>
+    <h2>Tell me about your goals</h2>
+    <div style="max-width:560px">
+      <div class="field">
+        <label>What made you reach out today?</label>
+        <textarea rows="3" data-field="reason">${state.reason}</textarea>
+      </div>
+      <div class="field">
+        <label>Confidence in your fitness & body right now? <span style="color:var(--mint);font-weight:700">${state.confidence||"—"}</span></label>
+        <div class="num-row">
+          ${[1,2,3,4,5].map(n => `<button class="num-btn ${state.confidence===n?'sel':''}" data-numfield="confidence" data-val="${n}">${n}</button>`).join("")}
+        </div>
+        <div style="font-size:12px;color:var(--dim);margin-top:6px">1 = "Don't trust my body" → 5 = "Feel like an athlete"</div>
+      </div>
+      <div class="field">
+        <label>Target level? <span style="color:var(--mint);font-weight:700">${state.target||"—"}</span></label>
+        <div class="num-row">
+          ${[1,2,3,4,5].map(n => `<button class="num-btn ${state.target===n?'sel-mint':''}" data-numfield="target" data-val="${n}">${n}</button>`).join("")}
+        </div>
+      </div>
+      <div class="field">
+        <label>Days per week you could commit?</label>
+        <div class="num-row">
+          ${[1,2,3,4,5].map(n => `<button class="num-btn ${state.daysPerWeek===n?'sel-warm':''}" data-numfield="daysPerWeek" data-val="${n}">${n}</button>`).join("")}
+        </div>
+      </div>
+      <div class="field">
+        <label>What's gotten in the way before?</label>
+        <div class="tag-row">
+          ${OBSTACLES.map(o => `<button class="tag ${state.obstacles.includes(o)?'sel':''}" data-obstacle="${o}">${o}</button>`).join("")}
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="nextScreen()">Continue to Movement Screen →</button>
+  `;
+}
+
+function renderFindings() {
+  return `
+    <div class="label">MOVEMENT ASSESSMENT</div>
+    <h2>Assessment Findings</h2>
+    <p class="sub">Select all findings from the movement screen</p>
+    <div class="findings-grid" style="max-width:600px">
+      ${FINDINGS_LIST.map(f => `
+        <button class="finding-btn ${state.findings.includes(f.id)?'sel':''}" data-finding="${f.id}">
+          <div class="zone">${f.zone.toUpperCase()}</div>
+          <div class="name">${f.label}</div>
+        </button>
+      `).join("")}
+    </div>
+    <div class="field" style="margin-top:16px;max-width:600px">
+      <label>Additional notes</label>
+      <textarea rows="2" data-field="findingNotes">${state.findingNotes}</textarea>
+    </div>
+    <button class="btn btn-primary" onclick="nextScreen()">Continue to Presentation →</button>
+  `;
+}
+
+function renderPresentation() {
+  const zones = new Set(FINDINGS_LIST.filter(f => state.findings.includes(f.id)).map(f => f.zone));
+  // Slide order: intro (0), 5 issues (1-5), cost context (6), proven methods (7), trajectory (8), care gap (9)
+  const totalSlides = 10;
+  const si = state.slideIdx;
+
+  let content = "";
+
+  // SLIDE 0: INTRO
+  if (si === 0) {
+    content = `
+      <h2 style="font-size:32px;margin-bottom:4px">Move Better.</h2>
+      <h2 style="font-size:32px;color:var(--mint);margin-bottom:20px">Live Better.</h2>
+      <p style="color:var(--dim);font-size:16px;line-height:1.6">The 5 most common movement and pain issues — and what we can do about them.${state.findings.length > 0 ? ' <span style="color:var(--mint)">We found some of these in your screen today.</span>' : ''}</p>
+    `;
+
+  // SLIDES 1-5: THE FIVE ISSUES
+  } else if (si >= 1 && si <= 5) {
+    const issue = ISSUES[si - 1];
+    const relevant = zones.has(issue.matchZone);
+    content = `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+        <span style="font-size:36px;font-weight:800;color:var(--mint)">${issue.num}</span>
+        <div>
+          <h3 style="margin:0">${issue.title}</h3>
+          <p style="font-size:14px;color:var(--dim);margin:0">${issue.subtitle}</p>
+        </div>
+        ${relevant ? '<span class="badge">FOUND IN SCREEN</span>' : ''}
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;align-items:baseline;gap:12px">
+          <span class="stat-big">${issue.stat}</span>
+          <span class="stat-label">${issue.statLabel}</span>
+        </div>
+        ${issue.stat2 ? `<div style="display:flex;align-items:baseline;gap:12px;margin-top:12px"><span style="font-size:32px;font-weight:800;color:var(--coral)">${issue.stat2}</span><span class="stat-label">${issue.stat2Label}</span></div>` : ''}
+      </div>
+      <p style="color:var(--dim);font-size:15px;line-height:1.65">${issue.body}</p>
+    `;
+
+  // SLIDE 6: WHAT THESE CONDITIONS COST
+  } else if (si === 6) {
+    content = `
+      <h2 style="font-size:26px;margin-bottom:8px">What These Conditions Cost</h2>
+      <p style="color:var(--dim);font-size:14px;margin-bottom:20px;line-height:1.5">When movement problems go unaddressed, they tend to escalate. Here's what treatment looks like once they do.</p>
+      <div class="cost-grid">
+        <div class="cost-header"><div>Procedure</div><div>Average Cost</div><div>Out of Pocket</div></div>
+        ${COST_DATA.map(r => `<div class="cost-row"><div>${r.proc}</div><div>${r.cost}</div><div>${r.oop}</div></div>`).join("")}
+      </div>
+      <p style="color:var(--dim);font-size:14px;line-height:1.6;margin-top:16px">Chronic pain alone costs individuals an average of <span style="color:var(--warm);font-weight:700">$7,726 more per year</span> in healthcare spending compared to people without pain. These aren't rare outcomes — they're where these conditions lead without intervention.</p>
+    `;
+
+  // SLIDE 7: WHAT WORKS (PROVEN METHODS)
+  } else if (si === 7) {
+    content = `
+      <h2 style="font-size:26px;margin-bottom:8px">What the Research Says Works</h2>
+      <p style="color:var(--dim);font-size:14px;margin-bottom:20px;line-height:1.5">The 2026 ACSM Position Stand on Resistance Training — the first update in 17 years — confirms what the best practitioners already know.</p>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card" style="border-left:3px solid var(--mint);padding:16px 20px">
+          <div style="font-size:15px;font-weight:700;color:var(--mint);margin-bottom:6px">Corrective Exercise</div>
+          <p style="font-size:14px;color:var(--dim);margin:0;line-height:1.5">Systematic assessment of movement patterns followed by targeted release, activation, and integration. This is the NASM model — identify compensations, fix the root cause, rebuild on a stable foundation.</p>
+        </div>
+        <div class="card" style="border-left:3px solid var(--mint);padding:16px 20px">
+          <div style="font-size:15px;font-weight:700;color:var(--mint);margin-bottom:6px">Progressive Loading & HSR</div>
+          <p style="font-size:14px;color:var(--dim);margin:0;line-height:1.5">Heavy Slow Resistance training remodels tendons and builds joint resilience. Controlled tempo, graduated intensity, and strict load management — not random exercise.</p>
+        </div>
+        <div class="card" style="border-left:3px solid var(--mint);padding:16px 20px">
+          <div style="font-size:15px;font-weight:700;color:var(--mint);margin-bottom:6px">Consistency Over Complexity</div>
+          <p style="font-size:14px;color:var(--dim);margin:0;line-height:1.5">The ACSM found that adherence is the #1 predictor of outcomes — not rigid periodization, not training to failure. Showing up consistently with a smart plan beats everything else.</p>
+        </div>
+      </div>
+    `;
+
+  // SLIDE 8: TRAJECTORY (3 / 6 / 9 MONTHS)
+  } else if (si === 8) {
+    content = `
+      <h2 style="font-size:26px;margin-bottom:8px">Your Trajectory</h2>
+      <p style="color:var(--dim);font-size:14px;margin-bottom:24px;line-height:1.5">Here's what realistic, evidence-based improvement looks like with consistent training.</p>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card" style="display:flex;gap:20px;align-items:flex-start">
+          <div style="min-width:64px;text-align:center">
+            <div style="font-size:32px;font-weight:800;color:var(--warm)">3</div>
+            <div style="font-size:11px;color:var(--dim);font-weight:600">MONTHS</div>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px">Foundation</div>
+            <p style="font-size:14px;color:var(--dim);margin:0;line-height:1.5">Pain reduction through corrective movement patterns. Improved joint mobility and stability. Baseline strength established. You start trusting your body again.</p>
+          </div>
+        </div>
+        <div class="card" style="display:flex;gap:20px;align-items:flex-start">
+          <div style="min-width:64px;text-align:center">
+            <div style="font-size:32px;font-weight:800;color:var(--mint)">6</div>
+            <div style="font-size:11px;color:var(--dim);font-weight:600">MONTHS</div>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px">Transformation</div>
+            <p style="font-size:14px;color:var(--dim);margin:0;line-height:1.5">Measurable strength gains and bilateral symmetry. Compensatory patterns replaced with clean movement. Daily activities feel noticeably easier. Confidence in your body is building.</p>
+          </div>
+        </div>
+        <div class="card" style="display:flex;gap:20px;align-items:flex-start">
+          <div style="min-width:64px;text-align:center">
+            <div style="font-size:32px;font-weight:800;color:var(--lmint)">9</div>
+            <div style="font-size:11px;color:var(--dim);font-weight:600">MONTHS</div>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px">Resilience</div>
+            <p style="font-size:14px;color:var(--dim);margin:0;line-height:1.5">Functional independence — you move well, you're strong, and you know your body. Injury risk is dramatically reduced. You have the tools to maintain this for life, with or without me.</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+  // SLIDE 9: THE CARE GAP (WHERE I COME IN)
+  } else if (si === 9) {
+    content = `
+      <h2 style="color:var(--mint);margin-bottom:16px;font-size:26px">Where I Come In</h2>
+      <div class="gap-flow">
+        ${["INJURY","MEDICAL","THE GAP","TRAINING"].map((label, i) => `
+          <div class="card gap-card" style="border-top:3px solid ${i===2?'var(--coral)':i===3?'var(--mint)':'var(--warm)'}">
+            <div class="gap-title" style="color:${i===2?'var(--coral)':i===3?'var(--mint)':'var(--warm)'}">${label}</div>
+            <div class="gap-desc">${["Acute event or chronic onset","Diagnosis, surgery, PT rehab","PT ends. Insurance runs out.","Expert corrective exercise"][i]}</div>
+          </div>
+        `).join("")}
+      </div>
+      <p style="font-size:15px;color:var(--dim);line-height:1.65;margin-bottom:16px">When physical therapy ends, most people are left on their own. No plan, no guidance. Within 6–9 months, they're back where they started — or worse.</p>
+      <div class="card" style="border-left:3px solid var(--mint);padding:16px 20px">
+        <p style="font-size:16px;font-weight:600;color:var(--white);margin:0;line-height:1.5">I pick up exactly where physical therapy leaves off. Same language, same principles, same attention to how your body moves — but now we're building strength, stability, and confidence on top of it. <span style="color:var(--mint)">That's the gap I fill.</span></p>
+      </div>
+    `;
+  }
+
+  return `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <div>
+        <div class="label">PRESENTATION</div>
+        <p style="color:var(--dim);font-size:13px;margin:4px 0 0">Slide ${si + 1} of ${totalSlides}</p>
+      </div>
+      <button class="btn btn-ghost" onclick="nextScreen()">Skip to Packages →</button>
+    </div>
+    <div style="max-width:640px;min-height:300px">${content}</div>
+    <div class="slide-nav">
+      ${si > 0 ? `<button class="btn btn-secondary" id="prevSlide">← Back</button>` : ''}
+      ${si < totalSlides - 1 ? `<button class="btn btn-primary" id="nextSlide">Next Slide →</button>` : `<button class="btn btn-accent" onclick="nextScreen()">Continue to Packages →</button>`}
+    </div>
+  `;
+}
+
+function renderPackages() {
+  return `
+    <div class="label">PACKAGES</div>
+    <h2>Choose your plan${state.firstName?', '+state.firstName:''}</h2>
+    <div class="dur-toggle">
+      ${[30,60].map(d => `<button class="dur-btn ${state.duration===d?'sel':''}" data-dur="${d}">${d}-Minute Sessions</button>`).join("")}
+    </div>
+    <div class="pkg-grid">
+      ${PACKAGES.map((p, i) => {
+        const price = state.duration===30 ? p.price30 : p.price60;
+        const sel = state.selectedPkg===i;
+        return `
+          <button class="pkg-btn ${sel?'sel':''}" data-pkg="${i}">
+            <div class="pkg-top">
+              <div class="pkg-freq">${p.freq}</div>
+              <div class="pkg-sess">${p.sessions} sessions/mo</div>
+            </div>
+            <div class="pkg-bottom">
+              <div class="pkg-price">$${price}</div>
+              <div class="pkg-mo">/month</div>
+            </div>
+          </button>
+        `;
+      }).join("")}
+    </div>
+    ${state.selectedPkg >= 0 ? `
+      <div class="card" style="border-left:3px solid var(--mint);margin-top:24px;max-width:640px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:16px;font-weight:700">${PACKAGES[state.selectedPkg].freq} × ${state.duration} min</div>
+            <div style="font-size:13px;color:var(--dim);margin-top:4px">${PACKAGES[state.selectedPkg].sessions} sessions per month</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:32px;font-weight:800;color:var(--mint)">$${state.duration===30?PACKAGES[state.selectedPkg].price30:PACKAGES[state.selectedPkg].price60}</div>
+            <div style="font-size:12px;color:var(--dim)">per month</div>
+          </div>
+        </div>
+      </div>
+    ` : ''}
+    <div style="margin-top:32px">
+      <button class="btn btn-primary" ${state.selectedPkg<0?'disabled':''} onclick="nextScreen()">${state.selectedPkg>=0?'Continue →':'Select a Package'}</button>
+    </div>
+  `;
+}
+
+function renderSummary() {
+  const pkg = state.selectedPkg >= 0 ? PACKAGES[state.selectedPkg] : null;
+  const price = pkg ? (state.duration===30 ? pkg.price30 : pkg.price60) : 0;
+  const foundFindings = FINDINGS_LIST.filter(f => state.findings.includes(f.id));
+
+  return `
+    <div class="label">SUMMARY</div>
+    <h2>Welcome aboard${state.firstName?', '+state.firstName:''}</h2>
+    <div style="max-width:560px">
+      <div class="card summary-card">
+        <div class="summary-label">SELECTED PLAN</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:18px;font-weight:700">${pkg ? pkg.freq+' × '+state.duration+' min' : '—'}</div>
+          <div style="font-size:28px;font-weight:800;color:var(--mint)">$${price}/mo</div>
+        </div>
+      </div>
+      ${foundFindings.length > 0 ? `
+        <div class="card summary-card">
+          <div class="summary-label">KEY FINDINGS</div>
+          <div class="tag-row">${foundFindings.map(f => `<span style="padding:4px 12px;border-radius:6px;background:var(--med);font-size:13px;color:var(--dim)">${f.label}</span>`).join("")}</div>
+        </div>
+      ` : ''}
+      <div class="card summary-card">
+        <div class="summary-label">CONFIDENCE</div>
+        <div style="font-size:16px">Current: <span style="color:var(--coral);font-weight:700">${state.confidence||"—"}/5</span> → Target: <span style="color:var(--mint);font-weight:700">${state.target||"—"}/5</span></div>
+      </div>
+      <div class="card summary-card">
+        <div class="summary-label">CLIENT</div>
+        <div style="font-size:15px">${state.firstName} ${state.lastName}${state.age?' · Age '+state.age:''}${state.email?' · '+state.email:''}${state.phone?' · '+state.phone:''}</div>
+      </div>
+      <div class="card summary-card">
+        <div class="summary-label">NEXT STEPS</div>
+        ${["Schedule first training session","Receive program outline via email","Begin corrective exercise protocol"].map((s,i) => `
+          <div class="next-step"><div class="step-num">${i+1}</div><span style="font-size:14px;color:var(--dim)">${s}</span></div>
+        `).join("")}
+      </div>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn btn-primary" id="copySummary">Copy Summary to Clipboard</button>
+      <button class="btn btn-secondary" onclick="setState({screen:'pin',pinEntry:'',firstName:'',lastName:'',age:'',email:'',phone:'',parq:{},parqNotes:'',reason:'',confidence:0,target:0,daysPerWeek:0,obstacles:[],findings:[],findingNotes:'',slideIdx:0,duration:60,selectedPkg:-1})">New Consultation</button>
+    </div>
+    ${state.showToast ? '<div class="copied-toast">Summary copied to clipboard!</div>' : ''}
+  `;
+}
+
+function buildSummaryText() {
+  const pkg = state.selectedPkg >= 0 ? PACKAGES[state.selectedPkg] : null;
+  const price = pkg ? (state.duration===30 ? pkg.price30 : pkg.price60) : 0;
+  const found = FINDINGS_LIST.filter(f => state.findings.includes(f.id));
+  const date = new Date().toLocaleDateString();
+
+  let t = `LEE GRAYSON FITNESS — CONSULTATION SUMMARY\n`;
+  t += `Date: ${date}\n\n`;
+  t += `CLIENT: ${state.firstName} ${state.lastName}\n`;
+  if (state.age) t += `Age: ${state.age}\n`;
+  if (state.email) t += `Email: ${state.email}\n`;
+  if (state.phone) t += `Phone: ${state.phone}\n`;
+  t += `\nCONFIDENCE: ${state.confidence}/5 → TARGET: ${state.target}/5\n`;
+  t += `AVAILABLE DAYS: ${state.daysPerWeek}/week\n`;
+  if (state.reason) t += `REASON: ${state.reason}\n`;
+  if (state.obstacles.length) t += `OBSTACLES: ${state.obstacles.join(", ")}\n`;
+  t += `\nFINDINGS:\n`;
+  if (found.length) found.forEach(f => t += `  • ${f.label} (${f.zone})\n`);
+  else t += `  None recorded\n`;
+  if (state.findingNotes) t += `  Notes: ${state.findingNotes}\n`;
+  t += `\nSELECTED PLAN: ${pkg?pkg.freq:'—'} × ${state.duration} min = $${price}/month\n`;
+  // PAR-Q flags
+  const flags = PARQ.filter((_, i) => state.parq[i] === true);
+  if (flags.length) { t += `\nPAR-Q FLAGS:\n`; flags.forEach(f => t += `  ⚠ ${f}\n`); }
+  if (state.parqNotes) t += `  Notes: ${state.parqNotes}\n`;
+  return t;
+}
+
+// ============ EVENT DELEGATION ============
+function attachEvents() {
+  // Text inputs
+  document.querySelectorAll("input[data-field], textarea[data-field]").forEach(el => {
+    el.addEventListener("input", () => {
+      const patch = {};
+      patch[el.dataset.field] = el.value;
+      Object.assign(state, patch);
+      // Enable/disable next button for info screen
+      const nb = document.getElementById("nextBtn");
+      if (nb) nb.disabled = !state.firstName;
+    });
+  });
+
+  // PAR-Q
+  document.querySelectorAll("[data-parq]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = parseInt(btn.dataset.parq);
+      const v = btn.dataset.val === "true";
+      state.parq[i] = v;
+      render();
+    });
+  });
+
+  // Number buttons
+  document.querySelectorAll("[data-numfield]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state[btn.dataset.numfield] = parseInt(btn.dataset.val);
+      render();
+    });
+  });
+
+  // Obstacles
+  document.querySelectorAll("[data-obstacle]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const o = btn.dataset.obstacle;
+      if (state.obstacles.includes(o)) state.obstacles = state.obstacles.filter(x => x !== o);
+      else state.obstacles.push(o);
+      render();
+    });
+  });
+
+  // Findings
+  document.querySelectorAll("[data-finding]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.finding;
+      if (state.findings.includes(id)) state.findings = state.findings.filter(x => x !== id);
+      else state.findings.push(id);
+      render();
+    });
+  });
+
+  // Slide nav
+  const prev = document.getElementById("prevSlide");
+  const next = document.getElementById("nextSlide");
+  if (prev) prev.addEventListener("click", () => setState({ slideIdx: state.slideIdx - 1 }));
+  if (next) next.addEventListener("click", () => setState({ slideIdx: state.slideIdx + 1 }));
+
+  // Duration toggle
+  document.querySelectorAll("[data-dur]").forEach(btn => {
+    btn.addEventListener("click", () => setState({ duration: parseInt(btn.dataset.dur), selectedPkg: -1 }));
+  });
+
+  // Package selection
+  document.querySelectorAll("[data-pkg]").forEach(btn => {
+    btn.addEventListener("click", () => setState({ selectedPkg: parseInt(btn.dataset.pkg) }));
+  });
+
+  // Copy summary
+  const copyBtn = document.getElementById("copySummary");
+  if (copyBtn) {
+    copyBtn.addEventListener("click", () => {
+      navigator.clipboard.writeText(buildSummaryText()).then(() => {
+        setState({ showToast: true });
+        setTimeout(() => setState({ showToast: false }), 2000);
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement("textarea");
+        ta.value = buildSummaryText();
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        setState({ showToast: true });
+        setTimeout(() => setState({ showToast: false }), 2000);
+      });
+    });
+  }
+}
+
+// ============ INIT ============
+render();
+</script>
+</body>
+</html>
