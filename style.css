@@ -190,7 +190,7 @@ h1, h2, h3, h4 {
 }
 
 .nav-cta-mobile {
-    display: none;
+    display: none !important;
 }
 
 /* Hamburger mobile menu button */
@@ -1312,6 +1312,44 @@ h1, h2, h3, h4 {
     .hero-content h1 {
         font-size: 3rem;
     }
+    
+    /* Navigation burger interaction */
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-white);
+        border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+        flex-direction: column;
+        padding: 32px 24px;
+        gap: 24px;
+        transform: translateY(-120%);
+        transition: var(--transition-smooth);
+        z-index: 999;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .nav-menu.open {
+        transform: translateY(0);
+    }
+    
+    .nav-cta {
+        display: none; /* Hide in header for mobile/tablet, we will add action to mobile menu */
+    }
+    
+    .nav-menu .nav-cta-mobile {
+        display: flex !important;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        margin-top: 16px;
+        align-items: center;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1382,43 +1420,5 @@ h1, h2, h3, h4 {
     .footer-grid {
         grid-template-columns: 1fr;
         gap: 40px;
-    }
-    
-    /* Navigation burger interaction */
-    .menu-toggle {
-        display: flex;
-    }
-    
-    .nav-menu {
-        position: fixed;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        background-color: var(--bg-white);
-        border-bottom: 1px solid rgba(14, 165, 233, 0.1);
-        flex-direction: column;
-        padding: 32px 24px;
-        gap: 24px;
-        transform: translateY(-120%);
-        transition: var(--transition-smooth);
-        z-index: 999;
-        box-shadow: var(--shadow-md);
-    }
-    
-    .nav-menu.open {
-        transform: translateY(0);
-    }
-    
-    .nav-cta {
-        display: none; /* Hide in header for mobile, we will add action to mobile menu */
-    }
-    
-    .nav-menu .nav-cta-mobile {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        width: 100%;
-        margin-top: 16px;
-        align-items: center;
     }
 }
