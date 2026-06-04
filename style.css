@@ -1430,3 +1430,361 @@ h1, h2, h3, h4 {
         gap: 40px;
     }
 }
+
+/* ==========================================================================
+   Clinical Post-Rehab & Referral Page Additions
+   ========================================================================== */
+
+/* Nav Highlight Link */
+.nav-link.highlight-link {
+    color: var(--accent);
+    font-weight: 700;
+    border: 1px solid var(--accent);
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-fast);
+}
+
+.nav-link.highlight-link:hover {
+    background-color: var(--accent-light);
+    color: hsl(var(--accent-hsl));
+    border-color: transparent;
+}
+
+.nav-link.highlight-link::after {
+    display: none; /* disable default line animation */
+}
+
+/* Post-Rehab Bridge Card on Homepage */
+.post-rehab-bridge-section {
+    background: radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 60%);
+    padding-top: 40px;
+    padding-bottom: 80px;
+}
+
+.bridge-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(14, 165, 233, 0.15);
+    border-radius: var(--radius-lg);
+    padding: 60px;
+    box-shadow: var(--shadow-lg);
+}
+
+.bridge-content {
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.bridge-content h2 {
+    font-size: 2.25rem;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+}
+
+.bridge-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-main);
+    margin-bottom: 30px;
+}
+
+.bridge-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.bridge-bullet-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Varta', sans-serif;
+    font-size: 1.05rem;
+    color: var(--text-main);
+}
+
+.bullet-icon {
+    width: 20px;
+    height: 20px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 2.5;
+    flex-shrink: 0;
+}
+
+.bridge-buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+/* Stats Page Grid Components */
+.stats-grid .pillar-card {
+    text-align: center;
+    padding: 50px 30px;
+    background-color: var(--bg-white);
+}
+
+.stat-number {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 15px;
+    letter-spacing: -0.03em;
+}
+
+.color-primary {
+    color: var(--primary);
+}
+
+.color-accent {
+    color: var(--accent);
+}
+
+.color-alert {
+    color: #ef4444;
+}
+
+.stat-source {
+    display: block;
+    margin-top: auto;
+    padding-top: 20px;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Solutions Timeline */
+.solution-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 40px auto 0 auto;
+    padding-left: 50px;
+}
+
+.solution-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 17px;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary) 0%, var(--accent) 100%);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-badge {
+    position: absolute;
+    left: -50px;
+    top: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: var(--bg-white);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--bg-light);
+    box-shadow: var(--shadow-sm);
+    z-index: 2;
+}
+
+.timeline-item:nth-child(even) .timeline-badge {
+    background-color: var(--accent);
+}
+
+.timeline-panel {
+    background-color: var(--bg-white);
+    border: 1px solid rgba(14, 165, 233, 0.08);
+    border-radius: var(--radius-md);
+    padding: 30px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+}
+
+.timeline-panel h3 {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+}
+
+.timeline-panel p {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* Inter-Operable Reporting Cards */
+.reporting-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.reporting-card {
+    background-color: var(--bg-white);
+    border: 1px solid rgba(14, 165, 233, 0.08);
+    border-radius: var(--radius-md);
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
+}
+
+.reporting-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(14, 165, 233, 0.2);
+}
+
+.reporting-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.reporting-card h4 {
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+}
+
+.reporting-card p {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* Tabbed Forms styling */
+.form-tabs {
+    display: flex;
+    border-bottom: 2px solid rgba(15, 23, 42, 0.08);
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-light);
+    padding: 12px 6px;
+    cursor: pointer;
+    position: relative;
+    transition: var(--transition-fast);
+}
+
+.tab-btn:hover {
+    color: var(--primary);
+}
+
+.tab-btn.active {
+    color: var(--primary);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary);
+    border-radius: 20px;
+}
+
+.tab-panel {
+    animation: fadeIn 0.35s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Form Styles update & tweaks */
+.vertical-form hr {
+    border: 0;
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+    margin: 15px 0;
+}
+
+/* Responsive adjustments for new features */
+@media (max-width: 1024px) {
+    .reporting-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .reporting-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .bridge-card {
+        padding: 30px;
+    }
+    
+    .bridge-content h2 {
+        font-size: 1.75rem;
+    }
+    
+    .bridge-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .solution-timeline {
+        padding-left: 30px;
+    }
+    
+    .solution-timeline::before {
+        left: 7px;
+    }
+    
+    .timeline-badge {
+        left: -30px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+        border-width: 2px;
+    }
+    
+    .form-tabs {
+        flex-direction: column;
+        gap: 0;
+        border-bottom: none;
+    }
+    
+    .tab-btn {
+        width: 100%;
+        text-align: left;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    }
+    
+    .tab-btn.active::after {
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+    }
+}
+

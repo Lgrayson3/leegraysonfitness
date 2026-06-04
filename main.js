@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
     initFAQ();
     initScrollReveal();
+    initFormTabs();
     initFormHandler();
 });
 
@@ -128,53 +129,118 @@ function initScrollReveal() {
 }
 
 /**
- * 4. Consultation Form Handling with interactive success overlay
+ * 3.5. Form Tab Switching in post-rehab.html
+ */
+function initFormTabs() {
+    const tabProvider = document.getElementById('tab-provider');
+    const tabPatient = document.getElementById('tab-patient');
+    const panelProvider = document.getElementById('form-provider-panel');
+    const panelPatient = document.getElementById('form-patient-panel');
+
+    if (tabProvider && tabPatient && panelProvider && panelPatient) {
+        tabProvider.addEventListener('click', () => {
+            tabProvider.classList.add('active');
+            tabProvider.setAttribute('aria-selected', 'true');
+            tabPatient.classList.remove('active');
+            tabPatient.setAttribute('aria-selected', 'false');
+            
+            panelProvider.style.display = 'block';
+            panelPatient.style.display = 'none';
+        });
+
+        tabPatient.addEventListener('click', () => {
+            tabPatient.classList.add('active');
+            tabPatient.setAttribute('aria-selected', 'true');
+            tabProvider.classList.remove('active');
+            tabProvider.setAttribute('aria-selected', 'false');
+            
+            panelPatient.style.display = 'block';
+            panelProvider.style.display = 'none';
+        });
+    }
+}
+
+/**
+ * 4. General Form Handling with Web3Forms & Success Overlays
  */
 function initFormHandler() {
-    const form = document.getElementById('consultation-form');
+    const forms = document.querySelectorAll('form');
     const successOverlay = document.getElementById('success-overlay');
 
-    if (form && successOverlay) {
+    forms.forEach(form => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            // Simple client-side check
+            // Simple HTML5 validation check
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
             }
 
-            // Gather values for feedback or future API posting
-            const formData = new FormData(form);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const phone = formData.get('phone');
-            const zip = formData.get('zip');
-            const services = [];
-            form.querySelectorAll('input[name="services"]:checked').forEach(cb => {
-                services.push(cb.value);
-            });
-
-            // Update success message header with user name
-            const firstName = name.split(' ')[0];
-            const successTitle = successOverlay.querySelector('h3');
-            if (successTitle) {
-                successTitle.textContent = `Thank you, ${firstName}!`;
+            const submitBtn = form.querySelector('.btn-submit');
+            const originalBtnText = submitBtn ? submitBtn.textContent : 'Submit';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
             }
 
-            // Show beautiful success overlay
-            successOverlay.classList.add('show');
+            const formData = new FormData(form);
+            const action = form.getAttribute('action') || 'https://api.web3forms.com/submit';
 
-            // Reset form for next possible interaction
-            form.reset();
-        });
-        
-        // Allow resetting overlay by clicking outside or clicking a close button
-        const resetSuccessBtn = document.getElementById('reset-success');
-        if (resetSuccessBtn) {
-            resetSuccessBtn.addEventListener('click', () => {
-                successOverlay.classList.remove('show');
+            // Post form data via fetch
+            fetch(action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(async (response) => {
+                if (response.ok) {
+                    // Update overlay text if necessary
+                    const nameInput = form.querySelector('[id$="name"]'); // matches client-name, provider-name, name
+                    let displayName = '';
+                    if (nameInput) {
+                        displayName = nameInput.value.split(' ')[0];
+                    }
+                    
+                    const successTitle = successOverlay.querySelector('h3');
+                    if (successTitle && displayName) {
+                        successTitle.textContent = `Thank you, ${displayName}!`;
+                    } else if (successTitle) {
+                        successTitle.textContent = `Submission Successful!`;
+                    }
+
+                    // Reset form fields
+                    form.reset();
+
+                    // Show success overlay modal
+                    if (successOverlay) {
+                        successOverlay.classList.add('show');
+                    }
+                } else {
+                    const data = await response.json();
+                    alert(data.message || 'There was an error submitting the form. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                alert('Connection error. Please check your network and try again.');
+            })
+            .finally(() => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                }
             });
-        }
+        });
+    });
+
+    // Close success overlay listener
+    const resetSuccessBtn = document.getElementById('reset-success');
+    if (resetSuccessBtn && successOverlay) {
+        resetSuccessBtn.addEventListener('click', () => {
+            successOverlay.classList.remove('show');
+        });
     }
 }
