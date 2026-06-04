@@ -574,7 +574,7 @@ h1, h2, h3, h4 {
 
 .pillars-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 30px;
 }
 
@@ -1785,6 +1785,179 @@ h1, h2, h3, h4 {
         bottom: 0;
         width: 100%;
         height: 2px;
+    }
+}
+
+/* ==========================================================================
+   16. Specialized Offerings Interactive Showcase Styling
+   ========================================================================== */
+
+.offerings-section {
+    background-color: #fafbfc; /* Light background to alternate sections */
+    border-top: 1px solid rgba(15, 23, 42, 0.04);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.04);
+}
+
+.service-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    padding-bottom: 20px;
+}
+
+.service-tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-smooth);
+    border: 1px solid transparent;
+}
+
+.service-tab-btn:hover {
+    color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.service-tab-btn.active {
+    color: var(--bg-white);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    box-shadow: var(--shadow-sm);
+}
+
+.service-tab-panel {
+    display: none;
+    animation: fadeInSlideUp 0.5s ease forwards;
+}
+
+.service-tab-panel.active {
+    display: block;
+}
+
+.service-focus-banner {
+    background-color: var(--primary-light);
+    border-left: 4px solid var(--primary);
+    padding: 20px 24px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}
+
+.service-focus-banner strong {
+    color: var(--primary-dark);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.services-subgrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.service-subcard {
+    background-color: var(--bg-white);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: var(--radius-md);
+    padding: 30px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.service-subcard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background-color: var(--primary);
+    opacity: 0.6;
+    transition: var(--transition-smooth);
+}
+
+.service-subcard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(14, 165, 233, 0.15);
+}
+
+.service-subcard:hover::before {
+    background-color: var(--accent);
+    width: 6px;
+    opacity: 1;
+}
+
+.service-subcard h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+
+.service-subcard p {
+    font-family: 'Varta', sans-serif;
+    font-size: 0.98rem;
+    color: var(--text-main);
+    line-height: 1.55;
+}
+
+/* Animations */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustment for service offerings */
+@media (max-width: 992px) {
+    .services-subgrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .service-tabs {
+        flex-direction: column;
+        gap: 0;
+        border-bottom: none;
+    }
+    
+    .service-tab-btn {
+        width: 100%;
+        text-align: left;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 0;
+    }
+    
+    .service-tab-btn:hover {
+        background-color: transparent;
+    }
+    
+    .service-tab-btn.active {
+        background: none;
+        color: var(--primary);
+        box-shadow: none;
+        border-bottom: 2px solid var(--primary);
+        font-weight: 700;
     }
 }
 
