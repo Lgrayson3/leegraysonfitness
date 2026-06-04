@@ -1961,3 +1961,110 @@ h1, h2, h3, h4 {
     }
 }
 
+/* ==========================================================================
+   17. Training Delivery Modes Section (In-Home vs. Virtual)
+   ========================================================================== */
+
+.delivery-section {
+    background-color: var(--bg-white);
+    border-top: 1px solid rgba(15, 23, 42, 0.04);
+}
+
+.delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.delivery-card {
+    background-color: #fafbfc;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: var(--radius-lg);
+    padding: 45px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: var(--transition-smooth);
+}
+
+.delivery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(14, 165, 233, 0.15);
+}
+
+.delivery-header {
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    padding-bottom: 20px;
+}
+
+.delivery-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.delivery-badge {
+    display: inline-block;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 50px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.delivery-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.delivery-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-family: 'Varta', sans-serif;
+    font-size: 1.05rem;
+    color: var(--text-main);
+    line-height: 1.5;
+}
+
+.delivery-item svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--primary);
+    fill: none;
+    stroke-width: 2.5;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.delivery-cta {
+    margin-top: auto;
+}
+
+/* Responsive adjustment for delivery section */
+@media (max-width: 992px) {
+    .delivery-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .delivery-card {
+        padding: 35px;
+    }
+}
+
