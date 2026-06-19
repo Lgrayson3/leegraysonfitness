@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Guide is Ready | Grayson Private Training</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Varta:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Reset & Variables */
+        :root {
+            --deep-blue: #0d2137;
+            --accent-blue: #1b4965;
+            --charcoal: #334155;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --border-color: rgba(13, 33, 55, 0.08);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-md: 0 10px 30px -10px rgba(13, 33, 55, 0.1);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Varta', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--white);
+            color: var(--charcoal);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--deep-blue);
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        /* Header Navigation */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--deep-blue);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .logo span {
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* Main Section */
+        main {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+            min-height: calc(100vh - 160px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 60px 40px;
+            box-shadow: var(--shadow-md);
+            width: 100%;
+            max-width: 540px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+        }
+
+        /* Animated Success Checkmark */
+        .success-icon-box {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(27, 73, 101, 0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .success-icon {
+            width: 44px;
+            height: 44px;
+            stroke: var(--accent-blue);
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+        }
+
+        .follow-up-note {
+            font-size: 1.1rem;
+            color: var(--charcoal);
+            line-height: 1.5;
+            max-width: 420px;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background-color: var(--deep-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 18px 36px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(13, 33, 55, 0.15);
+            margin-top: 10px;
+        }
+
+        .btn-download:hover {
+            background-color: var(--accent-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(27, 73, 101, 0.35);
+        }
+
+        .btn-download:active {
+            transform: translateY(0);
+        }
+
+        .btn-download svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            fill: none;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            background-color: var(--white);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            opacity: 0.6;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.75rem;
+            }
+            main {
+                padding: 40px 0;
+            }
+            .card {
+                padding: 40px 24px;
+            }
+            .btn-download {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Minimal Header -->
+    <header>
+        <div class="container logo-box">
+            <a href="https://leegraysonfitness.com" class="logo">Grayson <span>Private Training</span></a>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main role="main">
+        <div class="container" style="display: flex; justify-content: center;">
+            <div class="card">
+                
+                <!-- Success Icon -->
+                <div class="success-icon-box">
+                    <svg class="success-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                
+                <!-- Headline -->
+                <h1>Success! Your guide is ready.</h1>
+                
+                <!-- Download Call-to-Action -->
+                <a href="https://drive.google.com/file/d/11H4PE4NmD1IAUFyNCDJrH2P-ctNAUdVH/view?usp=drive_link" class="btn-download" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download Your Guide (PDF)
+                </a>
+                
+                <!-- Follow-up Notice -->
+                <p class="follow-up-note">Check your email tomorrow for a quick follow-up on how to implement this routine!</p>
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- Simple Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Grayson Private Training. All rights reserved. Ann Arbor, MI.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

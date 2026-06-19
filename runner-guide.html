@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop the Pain. Get the Guide. | Grayson Private Training</title>
+    <meta name="description" content="Get the free Runner's Guide to Bulletproof Tendons. Learn how to stop pain and rebuild hips, knees, and ankles for long-term joint longevity.">
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Varta:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Reset & Variables */
+        :root {
+            --deep-blue: #0d2137;
+            --accent-blue: #1b4965;
+            --charcoal: #334155;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --border-color: rgba(13, 33, 55, 0.08);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-md: 0 10px 30px -10px rgba(13, 33, 55, 0.1);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Varta', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--white);
+            color: var(--charcoal);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--deep-blue);
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        /* Header Navigation */
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--deep-blue);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .logo span {
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* Hero / Main Split Content */
+        main {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+            min-height: calc(100vh - 160px);
+            display: flex;
+            align-items: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* Left Side Content */
+        .content-col {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .tag {
+            align-self: flex-start;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            background-color: rgba(27, 73, 101, 0.08);
+            padding: 6px 14px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: var(--charcoal);
+            line-height: 1.4;
+        }
+
+        .benefits-list {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            stroke: var(--accent-blue);
+            stroke-width: 2.5;
+            fill: none;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .benefit-text strong {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--deep-blue);
+            margin-bottom: 2px;
+        }
+
+        .benefit-text p {
+            font-size: 0.98rem;
+            color: var(--charcoal);
+            opacity: 0.9;
+        }
+
+        /* Right Side Form Card */
+        .form-col {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .form-card {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .form-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .form-card p {
+            font-size: 0.95rem;
+            color: var(--charcoal);
+            opacity: 0.8;
+            margin-bottom: 28px;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--deep-blue);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: 'Varta', sans-serif;
+            font-size: 1rem;
+            color: var(--deep-blue);
+            outline: none;
+            background-color: var(--light-bg);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-blue);
+            background-color: var(--white);
+            box-shadow: 0 0 0 4px rgba(27, 73, 101, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--deep-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--accent-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(27, 73, 101, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            background-color: var(--white);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: var(--charcoal);
+            opacity: 0.6;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            main {
+                padding: 60px 0;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .form-col {
+                justify-content: center;
+            }
+            .form-card {
+                max-width: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.25rem;
+            }
+            .subtitle {
+                font-size: 1.15rem;
+            }
+            main {
+                padding: 40px 0;
+            }
+            .form-card {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Minimal Header -->
+    <header>
+        <div class="container logo-box">
+            <a href="https://leegraysonfitness.com" class="logo">Grayson <span>Private Training</span></a>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <main role="main">
+        <div class="container">
+            <div class="grid">
+                
+                <!-- Left Side: Benefit Copy -->
+                <section class="content-col" aria-labelledby="guide-title">
+                    <span class="tag">Free Digital Guide</span>
+                    <h1 id="guide-title">Stop the Pain.<br>Get the Guide.</h1>
+                    <p class="subtitle">The Runner’s Guide to Bulletproof Tendons: Hips, Knees, and Ankles.</p>
+                    
+                    <ul class="benefits-list">
+                        <li class="benefit-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <div class="benefit-text">
+                                <strong>Tendinosis vs Tendinopathy</strong>
+                                <p>Learn the critical difference so you can treat your pain correctly and avoid making it worse.</p>
+                            </div>
+                        </li>
+                        <li class="benefit-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <div class="benefit-text">
+                                <strong>A 10-Minute Zero-Equipment Routine</strong>
+                                <p>A simple, daily strength and mobility routine you can do anywhere to stabilize your joints.</p>
+                            </div>
+                        </li>
+                        <li class="benefit-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <div class="benefit-text">
+                                <strong>Stop Resting and Start Repairing</strong>
+                                <p>Discover why total rest actually weakens tendons, and how loaded movement triggers real cellular healing.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Right Side: Opt-in Form -->
+                <section class="form-col">
+                    <div class="form-card">
+                        <h2>Get Your Copy</h2>
+                        <p>Enter your details below to receive the free tendon guide instantly.</p>
+                        
+                        <form action="https://api.web3forms.com/submit" method="POST">
+                            <!-- Web3Forms Config -->
+                            <input type="hidden" name="access_key" value="2df3c57e-76cf-4a0a-a79b-b4ea70ff89c1">
+                            <input type="hidden" name="subject" value="New Lead Captured - Runner's Guide">
+                            <input type="hidden" name="from_name" value="Grayson Private Training">
+                            <input type="hidden" name="redirect" value="https://leegraysonfitness.com/thank-you.html">
+                            
+                            <!-- Opt-in Fields -->
+                            <div class="form-group">
+                                <label for="name">First & Last Name</label>
+                                <input type="text" id="name" name="name" placeholder="John Doe" required autocomplete="name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="john@example.com" required autocomplete="email">
+                            </div>
+                            
+                            <button type="submit" class="btn-submit">Download Free Guide</button>
+                        </form>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- Simple Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Grayson Private Training. All rights reserved. Ann Arbor, MI.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
